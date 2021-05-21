@@ -10,10 +10,10 @@ namespace BaladeurMultiFormats
     public abstract class Chanson : IChanson
     {
 
-        private int m_année;
-        private string m_artiste;
-        private string m_nomFichier;
-        private string m_titre;
+        public int m_année;
+        public string m_artiste;
+        public string m_nomFichier;
+        public string m_titre;
 
 
 

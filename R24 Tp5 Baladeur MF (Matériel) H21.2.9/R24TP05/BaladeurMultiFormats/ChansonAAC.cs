@@ -7,23 +7,18 @@ using System.Threading.Tasks;
 
 namespace BaladeurMultiFormats
 {
-    public class ChansonMP3 : Chanson
+    public class ChansonAAC : Chanson
     {
-        public override string Format
-        {
-            get { return "MP3"; } 
-        }
+        public override string Format => throw new NotImplementedException();
 
         public override void EcrireEntete(StreamWriter pobjFichier)
         {
-            pobjFichier.WriteLine(Artiste.ToString() + "|"+ Annee.ToString() + "|" + Titre.ToString()) ;
-            
+            throw new NotImplementedException();
         }
 
         public override void EcrireParoles(StreamWriter pobjFichier, string pParoles)
         {
-            OutilsFormats.EncoderMP3(pParoles);
-            pobjFichier.WriteLine(pParoles);
+            throw new NotImplementedException();
         }
 
         public override void LireEntete()
@@ -35,29 +30,23 @@ namespace BaladeurMultiFormats
             m_année = int.Parse(enleveDugras[1]);
             m_titre = enleveDugras[2];
 
-
-
-
-
         }
 
         public override string LireParoles(StreamReader pobjfichier)
         {
-            SauterEntete(pobjfichier);
-            string paroles = pobjfichier.ReadToEnd();
-            return paroles;
+            throw new NotImplementedException();
         }
 
-        public  ChansonMP3(string pNomFichier)
-            :base(pNomFichier)
+        public ChansonAAC(string pNomFichier)
+        :base(pNomFichier)
         {
-            
+        
+        }
+        public ChansonAAC(string pRepertoire, string pArtiste, string ptitre, int pAnnée)
+        : base(pRepertoire, pArtiste, ptitre, pAnnée)
+        {
+
         }
 
-        public ChansonMP3(string pRepertoire, string pArtiste, string ptitre, int pAnnée)
-            :base(pRepertoire, pArtiste, ptitre, pAnnée)
-        {
-            
-        }
     }
 }
