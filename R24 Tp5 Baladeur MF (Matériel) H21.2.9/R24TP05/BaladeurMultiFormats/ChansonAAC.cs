@@ -13,12 +13,13 @@ namespace BaladeurMultiFormats
 
         public override void EcrireEntete(StreamWriter pobjFichier)
         {
-            throw new NotImplementedException();
+            pobjFichier.WriteLine("TITRE = " + m_titre + ": ARTISTE = " + m_artiste + " : ANNÉE = " + m_année);
         }
 
         public override void EcrireParoles(StreamWriter pobjFichier, string pParoles)
         {
-            throw new NotImplementedException();
+            OutilsFormats.DecoderAAC(pParoles);
+            pobjFichier.WriteLine(pParoles);
         }
 
         public override void LireEntete()
@@ -34,7 +35,9 @@ namespace BaladeurMultiFormats
 
         public override string LireParoles(StreamReader pobjfichier)
         {
-            throw new NotImplementedException();
+            SauterEntete(pobjfichier);
+            string paroles = pobjfichier.ReadToEnd();
+            return paroles;
         }
 
         public ChansonAAC(string pNomFichier)
