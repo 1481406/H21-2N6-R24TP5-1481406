@@ -7,21 +7,29 @@ using System.Threading.Tasks;
 
 namespace BaladeurMultiFormats
 {
-    public class ChansonAAC : Chanson
+
+    public class ChansonWma : Chanson
     {
+
+      
+        private int m_codage;
+
         public override string Format
         {
-            get { return "AAC"; }
+            get { return "WMA"; }
         }
 
         public override void EcrireEntete(StreamWriter pobjFichier)
         {
-            pobjFichier.WriteLine("TITRE = " + m_titre + ": ARTISTE = " + m_artiste + " : ANNÉE = " + m_année);
+            Random number = new Random();
+            int randomInt = number.Next(3, 15);
+            m_codage = randomInt;
+            pobjFichier.WriteLine(  m_codage  + " / " + m_année + " / " + m_titre + " / " + m_artiste);
         }
 
         public override void EcrireParoles(StreamWriter pobjFichier, string pParoles)
         {
-            OutilsFormats.EncoderAAC(pParoles);
+            OutilsFormats.EncoderWMA(pParoles, m_codage);
             pobjFichier.WriteLine(pParoles);
         }
 
@@ -43,16 +51,15 @@ namespace BaladeurMultiFormats
             return paroles;
         }
 
-        public ChansonAAC(string pNomFichier)
-        :base(pNomFichier)
+        public ChansonWma(string pNomFichier)
+        : base(pNomFichier)
         {
-        
+
         }
-        public ChansonAAC(string pRepertoire, string pArtiste, string ptitre, int pAnnée)
+        public ChansonWma(string pRepertoire, string pArtiste, string ptitre, int pAnnée)
         : base(pRepertoire, pArtiste, ptitre, pAnnée)
         {
 
         }
-
     }
 }
