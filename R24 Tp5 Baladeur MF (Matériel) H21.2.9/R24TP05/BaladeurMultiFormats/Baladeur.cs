@@ -26,21 +26,15 @@ namespace BaladeurMultiFormats
             pListView.Clear();
             foreach (var ChansonCourante in m_colChansons)
             {
-                // will this work?????
-                if (!Directory.Exists("Chansons"))
-                {
-                    throw new DirectoryNotFoundException();
-                }
-                foreach (var item in Directory.GetFiles("Chansons"))
-                {
-                    if (!File.Exists(item))
-                    {
-                        throw new FileNotFoundException();
-                    }
-                    
-                  //  m_colChansons.Add(ChansonAAC(item));
-                }
-                pListView.Items.Add(ChansonCourante.ToString());
+                ListViewItem objitem = new ListViewItem(ChansonCourante.Artiste);
+                objitem.SubItems.Add(ChansonCourante.Titre);
+                objitem.SubItems.Add(ChansonCourante.Annee.ToString());
+                objitem.SubItems.Add(ChansonCourante.Format);
+                objitem.Tag = ChansonCourante;
+                
+               
+                
+                pListView.Items.Add(objitem);
             }
             
         }
@@ -52,7 +46,10 @@ namespace BaladeurMultiFormats
 
         public void ConstruireLaListeDesChansons()
         {
-
+            if (!Directory.Exists("Chansons"))
+            {
+                throw new DirectoryNotFoundException();
+            }
             // how is this supposed to be done???? 
 
             if (Directory.Exists(NOM_RÉPERTOIRE))
@@ -61,6 +58,11 @@ namespace BaladeurMultiFormats
 
                 foreach (var ChansonsIndividuelles in fichiersDesChansons)
                 {
+
+                    if (!File.Exists( NOM_RÉPERTOIRE + "\\" + ChansonsIndividuelles))
+                    {
+                        throw new FileNotFoundException();
+                    }
                     string[] Nomsplit = ChansonsIndividuelles.Split('.');
                     string extentionDeFichier = Nomsplit[1];
 
