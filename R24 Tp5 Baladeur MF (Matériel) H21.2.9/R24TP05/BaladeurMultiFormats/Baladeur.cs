@@ -10,22 +10,25 @@ namespace BaladeurMultiFormats
 {
     public class Baladeur : IBaladeur
     {
-
+        // les constante + la liste dans laquel les chansons vons être stocker.
         private const string NOM_RÉPERTOIRE = "Chansons";
         private List<Chanson> m_colChansons;
 
 
-
+        // retourne le compte de chansons dans la liste
         public int NbChansons
         {
-            get;
+            get { return m_colChansons.Count(); }
         }
-
+        // affiche les chansons dans la liste
         public void AfficherLesChansons(ListView pListView)
         {
+            // clair la liste si il y avais des informations qui ne sont plus a jour
             pListView.Clear();
+            // pour chaques chansons dans la liste de chansons
             foreach (var ChansonCourante in m_colChansons)
             {
+                // load ses champs dans la listview
                 ListViewItem objitem = new ListViewItem(ChansonCourante.Artiste);
                 objitem.SubItems.Add(ChansonCourante.Titre);
                 objitem.SubItems.Add(ChansonCourante.Annee.ToString());
@@ -33,54 +36,68 @@ namespace BaladeurMultiFormats
                 objitem.Tag = ChansonCourante;
                 
                
-                
+                // ajoute les objets a la chanson.
                 pListView.Items.Add(objitem);
             }
             
         }
 
+        // retourne la chanson dans l'index courant.
         public Chanson ChansonAt(int pIndex)
         {
             return m_colChansons[pIndex];
         }
-
+        // Construit la liste de chansons 
         public void ConstruireLaListeDesChansons()
         {
+            // si le directory n'existe pas 
             if (!Directory.Exists("Chansons"))
             {
                 throw new DirectoryNotFoundException();
             }
-            // how is this supposed to be done???? 
-
+           
+            // mais si il existe,
             if (Directory.Exists(NOM_RÉPERTOIRE))
             {
+                // contiens le nom de tout les fichiers dans le répertoire de la constante.
                 string[] fichiersDesChansons = Directory.GetFiles(NOM_RÉPERTOIRE);
 
+                // pour chaques chansons 
                 foreach (var ChansonsIndividuelles in fichiersDesChansons)
                 {
-
+                    // si le fichier n'existe pas 
                     if (!File.Exists( NOM_RÉPERTOIRE + "\\" + ChansonsIndividuelles))
                     {
                         throw new FileNotFoundException();
                     }
+                    //sinon si il existe
+                    
+                    // split le nom afin d'aller y chercher son extention
                     string[] Nomsplit = ChansonsIndividuelles.Split('.');
                     string extentionDeFichier = Nomsplit[1];
 
-
+                    // instancie une nouvelle chanson appeller Chanson courante, elle ne  peut être null a cause des sorties
                     Chanson chansonCourante;
 
+                    // si le fichier est en wma
                     if (extentionDeFichier == "wma")
                     {
                         chansonCourante = new ChansonWma(ChansonsIndividuelles);
 
                     }
+                    // si le fichier est en mp3
                     else if (extentionDeFichier == "mp3")
                     {
                         chansonCourante = new ChansonMP3(ChansonsIndividuelles);
                     }
-                    else //(extentionDeFichier == "aac")
+                    else if (extentionDeFichier == "aac")
                     {
                         chansonCourante = new ChansonAAC(ChansonsIndividuelles);
+                    }
+
+                    else
+                    {
+                        throw new FileLoadException();
                     }
                     m_colChansons.Add(chansonCourante);
 
@@ -90,6 +107,7 @@ namespace BaladeurMultiFormats
 
         }
 
+        // convertis la chanson en aac
         public void ConvertirVersAAC(int pIndex)
         {
             Chanson lachanson = m_colChansons[pIndex];
@@ -104,7 +122,7 @@ namespace BaladeurMultiFormats
             
 
         }
-
+        //Convertis la chanson vers mp3
         public void ConvertirVersMP3(int pIndex)
         {
             Chanson lachanson = m_colChansons[pIndex];
@@ -117,7 +135,7 @@ namespace BaladeurMultiFormats
             File.Delete("Chanson\\" + lachanson.NomFichier);
 
         }
-
+        // Convertir Vers WMA
         public void ConvertirVersWMA(int pIndex)
         {
          
@@ -130,6 +148,7 @@ namespace BaladeurMultiFormats
             File.Delete("Chanson\\" + lachanson.NomFichier);
         }
 
+        // clear la collection de chansons.
         public Baladeur()
         {
             m_colChansons.Clear();

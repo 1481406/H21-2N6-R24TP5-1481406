@@ -9,6 +9,7 @@ namespace BaladeurMultiFormats
 {
     interface IChanson
     {        
+        // vas chercher les  informations pour les chansons
          int Annee { get; }
         string Artiste { get; }
         string Format { get; }
@@ -19,16 +20,20 @@ namespace BaladeurMultiFormats
 
 
 
-
+        // Écrit les paroles
          void Ecrire(string pParoles);
-        void EcrireEntete(StreamWriter pobjFichier);
 
+        // Écrit l'entete  dans le fichier
+        void EcrireEntete(StreamWriter pobjFichier);
+        // écris les paroles dans le fichier
         void EcrireParoles(StreamWriter pobjFichier, string pParoles);
 
+        // Lit l'entête dune chanson
         void LireEntete();
 
+        // Lit les paroles dune chanson
         string LireParoles(StreamReader pobjfichier);
-
+        // Saute L'entête pour aller au paroles de la chanson
         void SauterEntete(StreamReader pobjFichier);
 
 
