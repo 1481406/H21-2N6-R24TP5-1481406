@@ -23,28 +23,55 @@ namespace BaladeurMultiFormats
 
         public void AfficherLesChansons(ListView pListView)
         {
-            throw new NotImplementedException();
+            pListView.Clear();
+            foreach (var ChansonCourante in m_colChansons)
+            {
+                // will this work?????
+                if (!Directory.Exists("Chansons"))
+                {
+                    throw new DirectoryNotFoundException();
+                }
+                foreach (var item in Directory.GetFiles("Chansons"))
+                {
+                    if (!File.Exists(item))
+                    {
+                        throw new FileNotFoundException();
+                    }
+                    
+                  //  m_colChansons.Add(ChansonAAC(item));
+                }
+                pListView.Items.Add(ChansonCourante.ToString());
+            }
+            
         }
 
         public Chanson ChansonAt(int pIndex)
         {
-            throw new NotImplementedException();
+            return m_colChansons[pIndex];
         }
 
         public void ConstruireLaListeDesChansons()
         {
+
+            // how is this supposed to be done???? 
             foreach (var Chanson in m_colChansons)
             {
-                if ()
+                if (!File.Exists(Chanson.ToString()))
                 {
-
+                    throw new FileNotFoundException();
                 }
+                
+
+
             }
         }
 
         public void ConvertirVersAAC(int pIndex)
         {
+            ChansonAAC Lachansonaac = new ChansonAAC(m_colChansons[pIndex].ToString());
+
             throw new NotImplementedException();
+
         }
 
         public void ConvertirVersMP3(int pIndex)
