@@ -54,34 +54,78 @@ namespace BaladeurMultiFormats
         {
 
             // how is this supposed to be done???? 
-            foreach (var Chanson in m_colChansons)
+
+            if (Directory.Exists(NOM_RÉPERTOIRE))
             {
-                if (!File.Exists(Chanson.ToString()))
+                string[] fichiersDesChansons = Directory.GetFiles(NOM_RÉPERTOIRE);
+
+                foreach (var ChansonsIndividuelles in fichiersDesChansons)
                 {
-                    throw new FileNotFoundException();
+                    string[] Nomsplit = ChansonsIndividuelles.Split('.');
+                    string extentionDeFichier = Nomsplit[1];
+
+
+                    Chanson chansonCourante;
+
+                    if (extentionDeFichier == "wma")
+                    {
+                        chansonCourante = new ChansonWma(ChansonsIndividuelles);
+
+                    }
+                    else if (extentionDeFichier == "mp3")
+                    {
+                        chansonCourante = new ChansonMP3(ChansonsIndividuelles);
+                    }
+                    else //(extentionDeFichier == "aac")
+                    {
+                        chansonCourante = new ChansonAAC(ChansonsIndividuelles);
+                    }
+                    m_colChansons.Add(chansonCourante);
+
+
                 }
-                
-
-
             }
+
         }
 
         public void ConvertirVersAAC(int pIndex)
         {
-            ChansonAAC Lachansonaac = new ChansonAAC(m_colChansons[pIndex].ToString());
+            Chanson lachanson = m_colChansons[pIndex];
+           
+            ChansonAAC Lachansonaac = new ChansonAAC(lachanson.NomFichier,lachanson.Artiste,lachanson.Titre,lachanson.Annee);
+           
+            
+            Lachansonaac.Ecrire(lachanson.Paroles);
+           
+            File.Delete("Chanson\\" + lachanson.NomFichier);
 
-            throw new NotImplementedException();
+            
 
         }
 
         public void ConvertirVersMP3(int pIndex)
         {
-            throw new NotImplementedException();
+            Chanson lachanson = m_colChansons[pIndex];
+
+
+            ChansonMP3 Lachansonmp3 = new ChansonMP3(lachanson.NomFichier, lachanson.Artiste, lachanson.Titre, lachanson.Annee);
+            
+            
+            Lachansonmp3.Ecrire(lachanson.Paroles);
+            File.Delete("Chanson\\" + lachanson.NomFichier);
+
         }
 
         public void ConvertirVersWMA(int pIndex)
         {
-            throw new NotImplementedException();
+         
+            
+            Chanson lachanson = m_colChansons[pIndex];
+            ChansonWma LachansonWMA = new ChansonWma(lachanson.NomFichier, lachanson.Artiste, lachanson.Titre, lachanson.Annee);
+          
+            LachansonWMA.Ecrire(lachanson.Paroles);
+          
+            File.Delete("Chanson\\" + lachanson.NomFichier);
         }
 
         public Baladeur()
